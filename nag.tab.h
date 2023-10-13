@@ -39,7 +39,7 @@
 # define YY_YY_NAG_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -70,8 +70,8 @@ union YYSTYPE
 {
 #line 16 "nag.y"
 
-    char *id;
     char *op;
+    char *id;
 
 #line 77 "nag.tab.h"
 

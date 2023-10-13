@@ -116,9 +116,15 @@ create_exp (char *name1, char *comp, char *name2)
 
   printf ("%s", name1);
 
-  strcpy (new->contexto1, name1);
-  strcpy (new->complemento, comp);
-  strcpy (new->contexto2, name2);
+  strncpy(new->contexto1, name1, sizeof(new->contexto1) - 1);
+  new->contexto1[sizeof(new->contexto1) - 1] = '\0'; // Ensure null-termination
+
+  strncpy(new->complemento, comp, sizeof(new->complemento) - 1);
+  new->complemento[sizeof(new->complemento) - 1] = '\0'; // Ensure null-termination
+
+  strncpy(new->contexto2, name2, sizeof(new->contexto2) - 1);
+  new->contexto2[sizeof(new->contexto2) - 1] = '\0'; // Ensure null-termination
+
 
   return new;
 }
@@ -133,10 +139,11 @@ set_new_list (struct list *l, const char *name)
       exit (EXIT_FAILURE);
     }
 
-  strcpy (new_val->name, name);
+  strncpy(new_val->name, name, sizeof(new_val->name) - 1);
+  new_val->name[sizeof(new_val->name) - 1] = '\0'; 
   new_val->next = NULL;
 
-  if (l == NULL)
+  if (!l)
     return new_val;
 
   new_val->next = l;
@@ -158,9 +165,9 @@ generate_jason_file (struct head *a)
       return;
     }
 
-  struct node *tmp_crenca = a->crencas;
-  struct node *tmp_obj = a->objetivos;
-  struct node *tmp_planos = a->planos;
+//   struct node *tmp_crenca = a->crencas;
+//   struct node *tmp_obj = a->objetivos;
+//   struct node *tmp_planos = a->planos;
 
   void print_list_formatted (FILE * f, struct list *list, const char *prefix,
 			     const char *suffix)
