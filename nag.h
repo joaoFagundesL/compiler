@@ -2,7 +2,7 @@
 #define BUFFER 50
 
 extern int yylineno;
-void yyerror(char *s, ...);
+void yyerror(char *s);
 
 struct list {
   char name[BUFFER];
