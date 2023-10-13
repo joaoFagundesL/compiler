@@ -24,6 +24,7 @@
 %token EOL
 
 %start list_stmt
+
 %%
 
 nome_crenca: ID { set_new_belief(agent, $1); }

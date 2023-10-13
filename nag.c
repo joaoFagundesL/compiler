@@ -84,23 +84,29 @@ set_new_plan (struct head *a, const char *name, char *eg,
   printf ("\n");
 }
 
-void
-set_new_belief (struct head *a, const char *name)
-{
-  struct node *tmp_crenca = (struct node *) malloc (sizeof (struct node));
-  if (!tmp_crenca)
-    {
-      yyerror ("[!] Memory allocation failure");
-      exit (EXIT_FAILURE);
+struct node *create_belief(const char *name) {
+    struct node *new_belief = (struct node *)malloc(sizeof(struct node));
+    if (!new_belief) {
+        yyerror("[!] Memory allocation failure");
+        exit(EXIT_FAILURE);
     }
+    
+    strncpy(new_belief->name, name, sizeof(new_belief->name) - 1);
+    new_belief->name[sizeof(new_belief->name) - 1] = '\0';
+    new_belief->next = NULL;
 
-  strncpy (tmp_crenca->name, name, sizeof (tmp_crenca->name) - 1);
-  tmp_crenca->name[sizeof (tmp_crenca->name) - 1] = '\0';
+    return new_belief;
+}
 
-  tmp_crenca->next = a->crencas;
-  a->crencas = tmp_crenca;
+void add_belief_to_agent(struct head *agent, struct node *belief) {
+    belief->next = agent->crencas;
+    agent->crencas = belief;
+}
 
-  printf (" CRENCA <%s>\n", tmp_crenca->name);
+void set_new_belief(struct head *agent, const char *name) {
+    struct node *new_belief = create_belief(name);
+    add_belief_to_agent(agent, new_belief);
+    printf("CRENCA <%s>\n", new_belief->name);
 }
 
 struct expr *
@@ -117,13 +123,13 @@ create_exp (char *name1, char *comp, char *name2)
   printf ("%s", name1);
 
   strncpy(new->contexto1, name1, sizeof(new->contexto1) - 1);
-  new->contexto1[sizeof(new->contexto1) - 1] = '\0'; // Ensure null-termination
+  new->contexto1[sizeof(new->contexto1) - 1] = '\0';
 
   strncpy(new->complemento, comp, sizeof(new->complemento) - 1);
-  new->complemento[sizeof(new->complemento) - 1] = '\0'; // Ensure null-termination
+  new->complemento[sizeof(new->complemento) - 1] = '\0';
 
   strncpy(new->contexto2, name2, sizeof(new->contexto2) - 1);
-  new->contexto2[sizeof(new->contexto2) - 1] = '\0'; // Ensure null-termination
+  new->contexto2[sizeof(new->contexto2) - 1] = '\0';
 
 
   return new;
@@ -195,7 +201,6 @@ void generate_jason_file(struct head *a) {
             while (struc != NULL) {
                 if(struc->next == NULL) 
                     fprintf(fptr, "     !%s.\n", struc->name);
-                    
                 else
                     fprintf(fptr, "     !%s;\n", struc->name);
 

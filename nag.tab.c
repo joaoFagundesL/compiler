@@ -526,10 +526,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    29,    29,    32,    33,    34,    37,    40,    41,    42,
-      45,    48,    49,    52,    53,    54,    57,    58,    61,    64,
-      71,    72,    73,    76,    79,    80,    81,    82,    85,    86,
-      87
+       0,    30,    30,    33,    34,    35,    38,    41,    42,    43,
+      46,    49,    50,    53,    54,    55,    58,    59,    62,    65,
+      72,    73,    74,    77,    80,    81,    82,    83,    86,    87,
+      88
 };
 #endif
 
@@ -1125,49 +1125,49 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* nome_crenca: ID  */
-#line 29 "nag.y"
+#line 30 "nag.y"
                 { set_new_belief(agent, (yyvsp[0].id)); }
 #line 1131 "nag.tab.c"
     break;
 
   case 6: /* nome_objetivo: ID  */
-#line 37 "nag.y"
+#line 38 "nag.y"
                   { set_new_goal(agent, (yyvsp[0].id)); }
 #line 1137 "nag.tab.c"
     break;
 
   case 10: /* event_trigger: ID  */
-#line 45 "nag.y"
+#line 46 "nag.y"
                                { evt = (yyvsp[0].id); }
 #line 1143 "nag.tab.c"
     break;
 
   case 11: /* logic_exp: ID OPERADOR ID  */
-#line 48 "nag.y"
+#line 49 "nag.y"
                                 { exp_curr = create_exp((yyvsp[-2].id), (yyvsp[-1].op), (yyvsp[0].id)); }
 #line 1149 "nag.tab.c"
     break;
 
   case 12: /* logic_exp: OPERADOR ID  */
-#line 49 "nag.y"
+#line 50 "nag.y"
                                     { exp_curr = create_exp("", (yyvsp[-1].op), (yyvsp[0].id)); }
 #line 1155 "nag.tab.c"
     break;
 
   case 14: /* contexto: ID  */
-#line 53 "nag.y"
+#line 54 "nag.y"
                                 { exp_curr = create_exp("", "", (yyvsp[0].id)); }
 #line 1161 "nag.tab.c"
     break;
 
   case 17: /* set_structure: ID ';' set_structure  */
-#line 58 "nag.y"
+#line 59 "nag.y"
                            { l = set_new_list(l, (yyvsp[-2].id)); }
 #line 1167 "nag.tab.c"
     break;
 
   case 19: /* nome_plano: ID '(' event_trigger ';' contexto ';' str ')'  */
-#line 65 "nag.y"
+#line 66 "nag.y"
             { 
                 set_new_plan(agent, (yyvsp[-7].id), evt, exp_curr, l); 
                 l = NULL;
@@ -1176,13 +1176,13 @@ yyreduce:
     break;
 
   case 23: /* nome_agente: ID  */
-#line 76 "nag.y"
+#line 77 "nag.y"
                 { agent = set_new_agent((yyvsp[0].id)); }
 #line 1182 "nag.tab.c"
     break;
 
   case 28: /* list_stmt: %empty  */
-#line 85 "nag.y"
+#line 86 "nag.y"
            { generate_jason_file(agent); }
 #line 1188 "nag.tab.c"
     break;
@@ -1381,4 +1381,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 90 "nag.y"
+#line 91 "nag.y"

@@ -717,7 +717,7 @@ YY_DECL
 		}
 
 	{
-#line 16 "nag.l"
+#line 12 "nag.l"
 
 
 #line 723 "lex.yy.c"
@@ -789,57 +789,57 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "nag.l"
+#line 14 "nag.l"
 { return CRENCAS; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "nag.l"
+#line 15 "nag.l"
 { return OBJETIVOS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 20 "nag.l"
+#line 16 "nag.l"
 { return PLANOS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "nag.l"
+#line 17 "nag.l"
 { yylval.op = strdup(yytext); return OPERADOR; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "nag.l"
+#line 18 "nag.l"
 { return yytext[0]; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "nag.l"
+#line 19 "nag.l"
 { yylval.id = strdup(yytext); return ID; }
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 24 "nag.l"
+#line 20 "nag.l"
 { return EOL; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 25 "nag.l"
+#line 21 "nag.l"
 { return 0; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "nag.l"
+#line 22 "nag.l"
 ;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "nag.l"
-{ printf("Unknown character: %s\n", yytext); return 0; }
+#line 23 "nag.l"
+{ fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); return 0; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 29 "nag.l"
+#line 25 "nag.l"
 ECHO;
 	YY_BREAK
 #line 845 "lex.yy.c"
@@ -1857,26 +1857,31 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 29 "nag.l"
+#line 25 "nag.l"
 
 
 extern FILE *yyin;  
 
-int main(int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
-	if (argc != 2) {
-		fprintf(stderr, "[!] Use mode: %s <FILE>", argv[0]);
-		return EXIT_FAILURE;
-	}
+  if (argc != 2)
+    {
+      fprintf (stderr, "[!] Use mode: %s <FILE>", argv[0]);
+      return EXIT_FAILURE;
+    }
 
-	yyin = fopen(argv[1], "r");
+  yyin = fopen (argv[1], "r");
 
-	if (!yyin) {
-		fprintf(stderr, "[!] File not found.\n");
-		return EXIT_FAILURE;
-	}
+  if (!yyin)
+    {
+      fprintf (stderr, "[!] File not found.\n");
+      return EXIT_FAILURE;
+    }
 
-	yyparse();
+  yyparse ();
+  fclose (yyin);
+
+  return EXIT_SUCCESS;
 }
-
 
