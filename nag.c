@@ -150,70 +150,56 @@ set_new_list (struct list *l, const char *name)
   l = new_val;
   return l;
 }
+void generate_jason_file(struct head *a) {
+    FILE *fptr;
+    char finalAddress[100] = "./";
+    char termination[] = ".asl";
+    strcat(finalAddress, a->name_agent);
+    strcat(finalAddress, termination);
 
-void
-generate_jason_file (struct head *a)
-{
-  char addr[BUFFER];
-  snprintf (addr, sizeof (addr), "./%s.asl", a->name_agent);
+    fptr = fopen(finalAddress, "w");
 
-  FILE *fptr = fopen (addr, "w");
-
-  if (!fptr)
-    {
-      yyerror ("[!] Error opening file for writing");
-      return;
+    for (struct node *auxCrenca = a->crencas; auxCrenca != NULL; auxCrenca = auxCrenca->next) {
+        fprintf(fptr, "%s.\n", auxCrenca->name);
     }
 
-//   struct node *tmp_crenca = a->crencas;
-//   struct node *tmp_obj = a->objetivos;
-//   struct node *tmp_planos = a->planos;
+    fprintf(fptr, "\n");
 
-  void print_list_formatted (FILE * f, struct list *list, const char *prefix,
-			     const char *suffix)
-  {
-    if (list)
-      {
-	fprintf (f, "%s", prefix);
-	for (struct list * tmp_list = list; tmp_list;
-	     tmp_list = tmp_list->next)
-	  {
-	    fprintf (f, "!%s", tmp_list->name);
-	    if (tmp_list->next)
-	      fprintf (f, ";\n%s", prefix);
-	    else
-	      fprintf (f, "%s", suffix);
-	  }
-      }
-  }
+    for (struct node *auxPlanos = a->planos; auxPlanos != NULL; auxPlanos = auxPlanos->next) {
+        fprintf(fptr, "+%s : ", auxPlanos->event_trigger);
 
-  for (struct node * tmp_crenca = a->crencas; tmp_crenca;
-       tmp_crenca = tmp_crenca->next)
-    fprintf (fptr, "%s.\n", tmp_crenca->name);
+        char* complemento = auxPlanos->expressaoCont->complemento;
+        char* contexto1 = auxPlanos->expressaoCont->contexto1;
+        char* contexto2 = auxPlanos->expressaoCont->contexto2;
 
-  fprintf (fptr, "\n");
+        if (!strcmp(complemento, "E")) {
+            fprintf(fptr, "%s & %s\n", contexto1, contexto2);
+        } else if (!strcmp(complemento, "OU")) {
+            fprintf(fptr, "%s | %s\n", contexto1, contexto2);
+        } else if (!strcmp(complemento, "NAO")) {
+            fprintf(fptr, "not %s\n", contexto2);
+        } else {
+            fprintf(fptr, "%s\n", contexto2);
+        }
 
-  for (struct node * tmp_obj = a->objetivos; tmp_obj; tmp_obj = tmp_obj->next)
-    fprintf (fptr, "%s.\n", tmp_obj->name);
+        struct list *auxcorpo = auxPlanos->list;
 
-  fprintf (fptr, "\n");
+        if (auxcorpo != NULL) {
+            fprintf(fptr, "  <- ");
 
-  for (struct node * tmp_planos = a->planos; tmp_planos;
-       tmp_planos = tmp_planos->next)
-    {
-      fprintf (fptr, "+%s : ", tmp_planos->event_trigger);
+            fprintf(fptr, "!%s", auxcorpo->name);
+            auxcorpo = auxcorpo->next;
 
-      const char *complemento = tmp_planos->expressaoCont->complemento;
+            while (auxcorpo != NULL) {
+                fprintf(fptr, "     !%s", auxcorpo->name);
+                auxcorpo = auxcorpo->next;
+            }
 
-      if (*complemento)
-	{
-	  fprintf (fptr, "%s %s %s\n", tmp_planos->expressaoCont->contexto1,
-		   complemento, tmp_planos->expressaoCont->contexto2);
+            fprintf(fptr, ".\n");
+        }
 
-	  fprintf (fptr, "  <- ");
-	  print_list_formatted (fptr, tmp_planos->list, "! ", ".\n\n");
-	}
-
-      fclose (fptr);
+        fprintf(fptr, "\n");
     }
+
+    fclose(fptr);
 }
