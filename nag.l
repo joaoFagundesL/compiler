@@ -24,6 +24,8 @@ space [ \t]
 "}"               { return RCURLY; }
 ";"             { return SEMI; }
 [a-zA-Z_][a-zA-Z0-9_]*		        { yylval.identifier = strdup(yytext); return IDENTIFIER; }
+"//".*					/* Ignora comentarios */
+"/*".*"*/" 				/* Ignora comentarios */
 {new_line}	            { return END_OF_LINE; }
 <<EOF>>             { return 0; }
 {space}		        ;
