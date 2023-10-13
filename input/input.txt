@@ -1,0 +1,3 @@
+bob1 crencas: { estaChovendo ; naotenhoGuardaChuva ; }
+objetivos: { comprarGuardaChuva ; naoPegarChuva ; }
+planos: { plano1 ( comprarGuardaChuva ; estaChovendo E naotenhoGuardaChuva ;{ sair; procurarLoja; comprarGuardaChuva; } ) ; }

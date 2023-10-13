@@ -1,0 +1,641 @@
+Grammar
+
+    0 $accept: list_stmt $end
+
+    1 nome_crenca: ID
+
+    2 crencas: ε
+    3        | nome_crenca ';' crencas
+    4        | '{' crencas '}'
+
+    5 nome_objetivo: ID
+
+    6 objetivos: ε
+    7          | nome_objetivo ';' objetivos
+    8          | '{' objetivos '}'
+
+    9 event_trigger: ID
+
+   10 expressaoLogica: ID OPERADOR ID
+   11                | OPERADOR ID
+
+   12 contexto: ε
+   13         | ID
+   14         | expressaoLogica
+
+   15 formula_corpo: ε
+   16              | ID ';' formula_corpo
+
+   17 corpo: '{' formula_corpo '}'
+
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')'
+
+   19 planos: ε
+   20       | nome_plano ';' planos
+   21       | '{' planos '}'
+
+   22 nome_agente: ID
+
+   23 stmt: ε
+   24     | PLANOS '{' planos '}'
+   25     | OBJETIVOS '{' objetivos '}'
+   26     | nome_agente CRENCAS '{' crencas '}'
+
+   27 list_stmt: ε
+   28          | stmt EOL list_stmt
+   29          | '0'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 18
+    ')' (41) 18
+    '0' (48) 29
+    ';' (59) 3 7 16 18 20
+    '{' (123) 4 8 17 21 24 25 26
+    '}' (125) 4 8 17 21 24 25 26
+    error (256)
+    ID <id> (258) 1 5 9 10 11 13 16 18 22
+    OPERADOR <op> (259) 10 11
+    CRENCAS (260) 26
+    OBJETIVOS (261) 25
+    PLANOS (262) 24
+    EOL (263) 28
+
+
+Nonterminals, with rules where they appear
+
+    $accept (15)
+        on left: 0
+    nome_crenca (16)
+        on left: 1
+        on right: 3
+    crencas (17)
+        on left: 2 3 4
+        on right: 3 4 26
+    nome_objetivo (18)
+        on left: 5
+        on right: 7
+    objetivos (19)
+        on left: 6 7 8
+        on right: 7 8 25
+    event_trigger (20)
+        on left: 9
+        on right: 18
+    expressaoLogica (21)
+        on left: 10 11
+        on right: 14
+    contexto (22)
+        on left: 12 13 14
+        on right: 18
+    formula_corpo (23)
+        on left: 15 16
+        on right: 16 17
+    corpo (24)
+        on left: 17
+        on right: 18
+    nome_plano (25)
+        on left: 18
+        on right: 20
+    planos (26)
+        on left: 19 20 21
+        on right: 20 21 24
+    nome_agente (27)
+        on left: 22
+        on right: 26
+    stmt (28)
+        on left: 23 24 25 26
+        on right: 28
+    list_stmt (29)
+        on left: 27 28 29
+        on right: 0 28
+
+
+State 0
+
+    0 $accept: • list_stmt $end
+
+    ID         shift, and go to state 1
+    OBJETIVOS  shift, and go to state 2
+    PLANOS     shift, and go to state 3
+    '0'        shift, and go to state 4
+
+    $end      reduce using rule 27 (list_stmt)
+    $default  reduce using rule 23 (stmt)
+
+    nome_agente  go to state 5
+    stmt         go to state 6
+    list_stmt    go to state 7
+
+
+State 1
+
+   22 nome_agente: ID •
+
+    $default  reduce using rule 22 (nome_agente)
+
+
+State 2
+
+   25 stmt: OBJETIVOS • '{' objetivos '}'
+
+    '{'  shift, and go to state 8
+
+
+State 3
+
+   24 stmt: PLANOS • '{' planos '}'
+
+    '{'  shift, and go to state 9
+
+
+State 4
+
+   29 list_stmt: '0' •
+
+    $default  reduce using rule 29 (list_stmt)
+
+
+State 5
+
+   26 stmt: nome_agente • CRENCAS '{' crencas '}'
+
+    CRENCAS  shift, and go to state 10
+
+
+State 6
+
+   28 list_stmt: stmt • EOL list_stmt
+
+    EOL  shift, and go to state 11
+
+
+State 7
+
+    0 $accept: list_stmt • $end
+
+    $end  shift, and go to state 12
+
+
+State 8
+
+   25 stmt: OBJETIVOS '{' • objetivos '}'
+
+    ID   shift, and go to state 13
+    '{'  shift, and go to state 14
+
+    $default  reduce using rule 6 (objetivos)
+
+    nome_objetivo  go to state 15
+    objetivos      go to state 16
+
+
+State 9
+
+   24 stmt: PLANOS '{' • planos '}'
+
+    ID   shift, and go to state 17
+    '{'  shift, and go to state 18
+
+    $default  reduce using rule 19 (planos)
+
+    nome_plano  go to state 19
+    planos      go to state 20
+
+
+State 10
+
+   26 stmt: nome_agente CRENCAS • '{' crencas '}'
+
+    '{'  shift, and go to state 21
+
+
+State 11
+
+   28 list_stmt: stmt EOL • list_stmt
+
+    ID         shift, and go to state 1
+    OBJETIVOS  shift, and go to state 2
+    PLANOS     shift, and go to state 3
+    '0'        shift, and go to state 4
+
+    $end      reduce using rule 27 (list_stmt)
+    $default  reduce using rule 23 (stmt)
+
+    nome_agente  go to state 5
+    stmt         go to state 6
+    list_stmt    go to state 22
+
+
+State 12
+
+    0 $accept: list_stmt $end •
+
+    $default  accept
+
+
+State 13
+
+    5 nome_objetivo: ID •
+
+    $default  reduce using rule 5 (nome_objetivo)
+
+
+State 14
+
+    8 objetivos: '{' • objetivos '}'
+
+    ID   shift, and go to state 13
+    '{'  shift, and go to state 14
+
+    $default  reduce using rule 6 (objetivos)
+
+    nome_objetivo  go to state 15
+    objetivos      go to state 23
+
+
+State 15
+
+    7 objetivos: nome_objetivo • ';' objetivos
+
+    ';'  shift, and go to state 24
+
+
+State 16
+
+   25 stmt: OBJETIVOS '{' objetivos • '}'
+
+    '}'  shift, and go to state 25
+
+
+State 17
+
+   18 nome_plano: ID • '(' event_trigger ';' contexto ';' corpo ')'
+
+    '('  shift, and go to state 26
+
+
+State 18
+
+   21 planos: '{' • planos '}'
+
+    ID   shift, and go to state 17
+    '{'  shift, and go to state 18
+
+    $default  reduce using rule 19 (planos)
+
+    nome_plano  go to state 19
+    planos      go to state 27
+
+
+State 19
+
+   20 planos: nome_plano • ';' planos
+
+    ';'  shift, and go to state 28
+
+
+State 20
+
+   24 stmt: PLANOS '{' planos • '}'
+
+    '}'  shift, and go to state 29
+
+
+State 21
+
+   26 stmt: nome_agente CRENCAS '{' • crencas '}'
+
+    ID   shift, and go to state 30
+    '{'  shift, and go to state 31
+
+    $default  reduce using rule 2 (crencas)
+
+    nome_crenca  go to state 32
+    crencas      go to state 33
+
+
+State 22
+
+   28 list_stmt: stmt EOL list_stmt •
+
+    $default  reduce using rule 28 (list_stmt)
+
+
+State 23
+
+    8 objetivos: '{' objetivos • '}'
+
+    '}'  shift, and go to state 34
+
+
+State 24
+
+    7 objetivos: nome_objetivo ';' • objetivos
+
+    ID   shift, and go to state 13
+    '{'  shift, and go to state 14
+
+    $default  reduce using rule 6 (objetivos)
+
+    nome_objetivo  go to state 15
+    objetivos      go to state 35
+
+
+State 25
+
+   25 stmt: OBJETIVOS '{' objetivos '}' •
+
+    $default  reduce using rule 25 (stmt)
+
+
+State 26
+
+   18 nome_plano: ID '(' • event_trigger ';' contexto ';' corpo ')'
+
+    ID  shift, and go to state 36
+
+    event_trigger  go to state 37
+
+
+State 27
+
+   21 planos: '{' planos • '}'
+
+    '}'  shift, and go to state 38
+
+
+State 28
+
+   20 planos: nome_plano ';' • planos
+
+    ID   shift, and go to state 17
+    '{'  shift, and go to state 18
+
+    $default  reduce using rule 19 (planos)
+
+    nome_plano  go to state 19
+    planos      go to state 39
+
+
+State 29
+
+   24 stmt: PLANOS '{' planos '}' •
+
+    $default  reduce using rule 24 (stmt)
+
+
+State 30
+
+    1 nome_crenca: ID •
+
+    $default  reduce using rule 1 (nome_crenca)
+
+
+State 31
+
+    4 crencas: '{' • crencas '}'
+
+    ID   shift, and go to state 30
+    '{'  shift, and go to state 31
+
+    $default  reduce using rule 2 (crencas)
+
+    nome_crenca  go to state 32
+    crencas      go to state 40
+
+
+State 32
+
+    3 crencas: nome_crenca • ';' crencas
+
+    ';'  shift, and go to state 41
+
+
+State 33
+
+   26 stmt: nome_agente CRENCAS '{' crencas • '}'
+
+    '}'  shift, and go to state 42
+
+
+State 34
+
+    8 objetivos: '{' objetivos '}' •
+
+    $default  reduce using rule 8 (objetivos)
+
+
+State 35
+
+    7 objetivos: nome_objetivo ';' objetivos •
+
+    $default  reduce using rule 7 (objetivos)
+
+
+State 36
+
+    9 event_trigger: ID •
+
+    $default  reduce using rule 9 (event_trigger)
+
+
+State 37
+
+   18 nome_plano: ID '(' event_trigger • ';' contexto ';' corpo ')'
+
+    ';'  shift, and go to state 43
+
+
+State 38
+
+   21 planos: '{' planos '}' •
+
+    $default  reduce using rule 21 (planos)
+
+
+State 39
+
+   20 planos: nome_plano ';' planos •
+
+    $default  reduce using rule 20 (planos)
+
+
+State 40
+
+    4 crencas: '{' crencas • '}'
+
+    '}'  shift, and go to state 44
+
+
+State 41
+
+    3 crencas: nome_crenca ';' • crencas
+
+    ID   shift, and go to state 30
+    '{'  shift, and go to state 31
+
+    $default  reduce using rule 2 (crencas)
+
+    nome_crenca  go to state 32
+    crencas      go to state 45
+
+
+State 42
+
+   26 stmt: nome_agente CRENCAS '{' crencas '}' •
+
+    $default  reduce using rule 26 (stmt)
+
+
+State 43
+
+   18 nome_plano: ID '(' event_trigger ';' • contexto ';' corpo ')'
+
+    ID        shift, and go to state 46
+    OPERADOR  shift, and go to state 47
+
+    $default  reduce using rule 12 (contexto)
+
+    expressaoLogica  go to state 48
+    contexto         go to state 49
+
+
+State 44
+
+    4 crencas: '{' crencas '}' •
+
+    $default  reduce using rule 4 (crencas)
+
+
+State 45
+
+    3 crencas: nome_crenca ';' crencas •
+
+    $default  reduce using rule 3 (crencas)
+
+
+State 46
+
+   10 expressaoLogica: ID • OPERADOR ID
+   13 contexto: ID •
+
+    OPERADOR  shift, and go to state 50
+
+    $default  reduce using rule 13 (contexto)
+
+
+State 47
+
+   11 expressaoLogica: OPERADOR • ID
+
+    ID  shift, and go to state 51
+
+
+State 48
+
+   14 contexto: expressaoLogica •
+
+    $default  reduce using rule 14 (contexto)
+
+
+State 49
+
+   18 nome_plano: ID '(' event_trigger ';' contexto • ';' corpo ')'
+
+    ';'  shift, and go to state 52
+
+
+State 50
+
+   10 expressaoLogica: ID OPERADOR • ID
+
+    ID  shift, and go to state 53
+
+
+State 51
+
+   11 expressaoLogica: OPERADOR ID •
+
+    $default  reduce using rule 11 (expressaoLogica)
+
+
+State 52
+
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' • corpo ')'
+
+    '{'  shift, and go to state 54
+
+    corpo  go to state 55
+
+
+State 53
+
+   10 expressaoLogica: ID OPERADOR ID •
+
+    $default  reduce using rule 10 (expressaoLogica)
+
+
+State 54
+
+   17 corpo: '{' • formula_corpo '}'
+
+    ID  shift, and go to state 56
+
+    $default  reduce using rule 15 (formula_corpo)
+
+    formula_corpo  go to state 57
+
+
+State 55
+
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo • ')'
+
+    ')'  shift, and go to state 58
+
+
+State 56
+
+   16 formula_corpo: ID • ';' formula_corpo
+
+    ';'  shift, and go to state 59
+
+
+State 57
+
+   17 corpo: '{' formula_corpo • '}'
+
+    '}'  shift, and go to state 60
+
+
+State 58
+
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')' •
+
+    $default  reduce using rule 18 (nome_plano)
+
+
+State 59
+
+   16 formula_corpo: ID ';' • formula_corpo
+
+    ID  shift, and go to state 56
+
+    $default  reduce using rule 15 (formula_corpo)
+
+    formula_corpo  go to state 61
+
+
+State 60
+
+   17 corpo: '{' formula_corpo '}' •
+
+    $default  reduce using rule 17 (corpo)
+
+
+State 61
+
+   16 formula_corpo: ID ';' formula_corpo •
+
+    $default  reduce using rule 16 (formula_corpo)
