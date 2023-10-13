@@ -1,85 +1,77 @@
 %{
-	/* Analisador Sintático TradutorNAG_Jason */
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
     #include "nag.h"
     #include "nag.tab.h"
-    int yylex();
 
     struct head *agent;
-    char *currentEventoGat;
-    struct expr *currentExp;
-    struct list *currentCorpo = NULL;
+    char *evt;
+    struct expr *exp_curr;
+    struct list *l = NULL;
+    
+    int yylex();
 %}
 
 %union {
-    char *id;
     char *op;
+    char *id;
 }
 
 %token <id> ID
 %token <op> OPERADOR
-%token CRENCAS OBJETIVOS PLANOS
+%token PLANOS CRENCAS OBJETIVOS
 %token EOL
 
 %start list_stmt
 %%
 
-/* LIDANDO COM AS CRENCAS */
-
 nome_crenca: ID { set_new_belief(agent, $1); }
     ;
 
-crencas: /* Vazio */
+crencas: 
 	| nome_crenca ';' crencas 
     | '{' crencas '}'  
 	;
 
-/* LIDANDO COM OS OBJETIVOS */
-
 nome_objetivo: ID { set_new_goal(agent, $1); }
     ;
 
-objetivos: /* Vazio */
+objetivos: 
 	| nome_objetivo ';' objetivos 
     | '{' objetivos '}'
 	;
 
-/* LIDANDO COM OS PLANOS */
-
-event_trigger: ID              { currentEventoGat = $1; }
+event_trigger: ID              { evt = $1; }
     ;
 
-expressaoLogica: ID OPERADOR ID	{ currentExp = create_exp($1, $2, $3); }
-	| OPERADOR ID               { currentExp = create_exp("", $1, $2); }  
+logic_exp: ID OPERADOR ID	{ exp_curr = create_exp($1, $2, $3); }
+	| OPERADOR ID               { exp_curr = create_exp("", $1, $2); }  
     ;
 
-contexto: /* Vazio */
-    | ID                        { currentExp = create_exp("", "", $1); }
-    | expressaoLogica	          
+contexto: 
+    | ID                        { exp_curr = create_exp("", "", $1); }
+    | logic_exp	          
     ;
 
-formula_corpo: /* Vazio */
-    | ID ';' formula_corpo { currentCorpo = set_new_list(currentCorpo, $1); }     
+set_structure: 
+    | ID ';' set_structure { l = set_new_list(l, $1); }     
     ;
 
-corpo: '{' formula_corpo '}'
+str: '{' set_structure '}'
     ;
 
-nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')' 
+nome_plano: ID '(' event_trigger ';' contexto ';' str ')' 
             { 
-                set_new_plan(agent, $1, currentEventoGat, currentExp, currentCorpo); 
-                currentCorpo = NULL;
+                set_new_plan(agent, $1, evt, exp_curr, l); 
+                l = NULL;
             }
     ;
 
-planos: /* Vazio */
+planos: 
     | nome_plano ';' planos
     | '{' planos '}'	       
     ;
-
-/* LIDANDO COM OS COMANDOS */ 
 
 nome_agente: ID { agent = set_new_agent($1); }
     ;
@@ -96,5 +88,3 @@ list_stmt: { generate_jason_file(agent); }
 	;
 
 %%
-
-

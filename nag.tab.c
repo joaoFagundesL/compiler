@@ -69,18 +69,18 @@
 /* First part of user prologue.  */
 #line 1 "nag.y"
 
-	/* Analisador Sintático TradutorNAG_Jason */
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
     #include "nag.h"
     #include "nag.tab.h"
-    int yylex();
 
     struct head *agent;
-    char *currentEventoGat;
-    struct expr *currentExp;
-    struct list *currentCorpo = NULL;
+    char *evt;
+    struct expr *exp_curr;
+    struct list *l = NULL;
+    
+    int yylex();
 
 #line 86 "nag.tab.c"
 
@@ -115,9 +115,9 @@ enum yysymbol_kind_t
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_ID = 3,                         /* ID  */
   YYSYMBOL_OPERADOR = 4,                   /* OPERADOR  */
-  YYSYMBOL_CRENCAS = 5,                    /* CRENCAS  */
-  YYSYMBOL_OBJETIVOS = 6,                  /* OBJETIVOS  */
-  YYSYMBOL_PLANOS = 7,                     /* PLANOS  */
+  YYSYMBOL_PLANOS = 5,                     /* PLANOS  */
+  YYSYMBOL_CRENCAS = 6,                    /* CRENCAS  */
+  YYSYMBOL_OBJETIVOS = 7,                  /* OBJETIVOS  */
   YYSYMBOL_EOL = 8,                        /* EOL  */
   YYSYMBOL_9_ = 9,                         /* ';'  */
   YYSYMBOL_10_ = 10,                       /* '{'  */
@@ -131,10 +131,10 @@ enum yysymbol_kind_t
   YYSYMBOL_nome_objetivo = 18,             /* nome_objetivo  */
   YYSYMBOL_objetivos = 19,                 /* objetivos  */
   YYSYMBOL_event_trigger = 20,             /* event_trigger  */
-  YYSYMBOL_expressaoLogica = 21,           /* expressaoLogica  */
+  YYSYMBOL_logic_exp = 21,                 /* logic_exp  */
   YYSYMBOL_contexto = 22,                  /* contexto  */
-  YYSYMBOL_formula_corpo = 23,             /* formula_corpo  */
-  YYSYMBOL_corpo = 24,                     /* corpo  */
+  YYSYMBOL_set_structure = 23,             /* set_structure  */
+  YYSYMBOL_str = 24,                       /* str  */
   YYSYMBOL_nome_plano = 25,                /* nome_plano  */
   YYSYMBOL_planos = 26,                    /* planos  */
   YYSYMBOL_nome_agente = 27,               /* nome_agente  */
@@ -467,7 +467,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   51
+#define YYLAST   50
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  15
@@ -526,10 +526,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    31,    31,    34,    35,    36,    41,    44,    45,    46,
-      51,    54,    55,    58,    59,    60,    63,    64,    67,    70,
-      77,    78,    79,    84,    87,    88,    89,    90,    93,    94,
-      95
+       0,    29,    29,    32,    33,    34,    37,    40,    41,    42,
+      45,    48,    49,    52,    53,    54,    57,    58,    61,    64,
+      71,    72,    73,    76,    79,    80,    81,    82,    85,    86,
+      87
 };
 #endif
 
@@ -546,11 +546,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "ID", "OPERADOR",
-  "CRENCAS", "OBJETIVOS", "PLANOS", "EOL", "';'", "'{'", "'}'", "'('",
+  "PLANOS", "CRENCAS", "OBJETIVOS", "EOL", "';'", "'{'", "'}'", "'('",
   "')'", "'0'", "$accept", "nome_crenca", "crencas", "nome_objetivo",
-  "objetivos", "event_trigger", "expressaoLogica", "contexto",
-  "formula_corpo", "corpo", "nome_plano", "planos", "nome_agente", "stmt",
-  "list_stmt", YY_NULLPTR
+  "objetivos", "event_trigger", "logic_exp", "contexto", "set_structure",
+  "str", "nome_plano", "planos", "nome_agente", "stmt", "list_stmt", YY_NULLPTR
 };
 
 static const char *
@@ -560,7 +559,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-34)
+#define YYPACT_NINF (-28)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -574,13 +573,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       0,   -34,    -6,    -2,   -34,    16,    14,    23,     6,     7,
-      17,     0,   -34,   -34,     6,    19,    13,    18,     7,    20,
-      21,    10,   -34,    22,     6,   -34,    28,    24,     7,   -34,
-     -34,    10,    25,    26,   -34,   -34,   -34,    27,   -34,   -34,
-      29,    10,   -34,    15,   -34,   -34,    34,    36,   -34,    32,
-      39,   -34,    33,   -34,    41,    12,    37,    38,   -34,    41,
-     -34,   -34
+       0,   -28,     3,     5,   -28,    15,    14,    23,    -1,     1,
+      17,     0,   -28,    12,    -1,    19,    18,   -28,     1,    21,
+      20,     7,   -28,    22,    24,    -1,   -28,    25,     1,   -28,
+     -28,     7,    28,    27,   -28,    30,   -28,   -28,   -28,   -28,
+      29,     7,   -28,    16,   -28,   -28,    37,    31,   -28,    33,
+      40,   -28,    34,   -28,    42,    13,    38,    35,   -28,    42,
+     -28,   -28
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -588,10 +587,10 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-      24,    23,     0,     0,    30,     0,     0,     0,     7,    20,
-       0,    24,     1,     6,     7,     0,     0,     0,    20,     0,
-       0,     3,    29,     0,     7,    26,     0,     0,    20,    25,
-       2,     3,     0,     0,     9,     8,    10,     0,    22,    21,
+      24,    23,     0,     0,    30,     0,     0,     0,    20,     7,
+       0,    24,     1,     0,    20,     0,     0,     6,     7,     0,
+       0,     3,    29,     0,     0,    20,    25,     0,     7,    26,
+       2,     3,     0,     0,    10,     0,    22,    21,     9,     8,
        0,     3,    27,    13,     5,     4,    14,     0,    15,     0,
        0,    12,     0,    11,    16,     0,     0,     0,    19,    16,
       18,    17
@@ -600,15 +599,15 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -34,   -34,   -30,   -34,   -12,   -34,   -34,   -34,   -33,   -34,
-     -34,   -13,   -34,   -34,    40
+     -28,   -28,   -25,   -28,   -10,   -28,   -28,   -28,   -27,   -28,
+     -28,   -13,   -28,   -28,    39
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    32,    33,    15,    16,    37,    48,    49,    57,    55,
-      19,    20,     5,     6,     7
+       0,    32,    33,    19,    20,    35,    48,    49,    57,    55,
+      15,    16,     5,     6,     7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -616,32 +615,32 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-     -28,    40,    23,     1,     8,    27,     2,     3,     9,    13,
-      17,    45,    35,    30,     4,    39,    14,    18,    46,    47,
-      31,    10,    11,    12,    25,    58,    61,    21,    24,    28,
-      26,    36,    29,    34,    41,    38,    43,    42,    50,    51,
-      44,    52,    53,    54,    56,     0,    59,     0,     0,    60,
-       0,    22
+     -28,    24,    13,     1,    17,     2,    40,     3,    27,    14,
+      30,    18,    37,     8,     4,     9,    45,    31,    39,    46,
+      47,    10,    11,    12,    23,    34,    58,    21,    25,    26,
+      28,    29,    61,     0,    51,    36,    38,    41,    42,    43,
+      44,    50,    52,    53,    54,    56,    60,    59,     0,     0,
+      22
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    31,    14,     3,    10,    18,     6,     7,    10,     3,
-       3,    41,    24,     3,    14,    28,    10,    10,     3,     4,
-      10,     5,     8,     0,    11,    13,    59,    10,     9,     9,
-      12,     3,    11,    11,     9,    11,     9,    11,     4,     3,
-      11,     9,     3,    10,     3,    -1,     9,    -1,    -1,    11,
-      -1,    11
+       0,    14,     3,     3,     3,     5,    31,     7,    18,    10,
+       3,    10,    25,    10,    14,    10,    41,    10,    28,     3,
+       4,     6,     8,     0,    12,     3,    13,    10,     9,    11,
+       9,    11,    59,    -1,     3,    11,    11,     9,    11,     9,
+      11,     4,     9,     3,    10,     3,    11,     9,    -1,    -1,
+      11
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     6,     7,    14,    27,    28,    29,    10,    10,
-       5,     8,     0,     3,    10,    18,    19,     3,    10,    25,
-      26,    10,    29,    19,     9,    11,    12,    26,     9,    11,
-       3,    10,    16,    17,    11,    19,     3,    20,    11,    26,
+       0,     3,     5,     7,    14,    27,    28,    29,    10,    10,
+       6,     8,     0,     3,    10,    25,    26,     3,    10,    18,
+      19,    10,    29,    12,    26,     9,    11,    19,     9,    11,
+       3,    10,    16,    17,     3,    20,    11,    26,    11,    19,
       17,     9,    11,     9,    11,    17,     3,     4,    21,    22,
        4,     3,     9,     3,    10,    24,     3,    23,    13,     9,
       11,    23
@@ -1126,70 +1125,70 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* nome_crenca: ID  */
-#line 31 "nag.y"
+#line 29 "nag.y"
                 { set_new_belief(agent, (yyvsp[0].id)); }
-#line 1132 "nag.tab.c"
+#line 1131 "nag.tab.c"
     break;
 
   case 6: /* nome_objetivo: ID  */
-#line 41 "nag.y"
+#line 37 "nag.y"
                   { set_new_goal(agent, (yyvsp[0].id)); }
-#line 1138 "nag.tab.c"
+#line 1137 "nag.tab.c"
     break;
 
   case 10: /* event_trigger: ID  */
-#line 51 "nag.y"
-                               { currentEventoGat = (yyvsp[0].id); }
-#line 1144 "nag.tab.c"
+#line 45 "nag.y"
+                               { evt = (yyvsp[0].id); }
+#line 1143 "nag.tab.c"
     break;
 
-  case 11: /* expressaoLogica: ID OPERADOR ID  */
-#line 54 "nag.y"
-                                { currentExp = create_exp((yyvsp[-2].id), (yyvsp[-1].op), (yyvsp[0].id)); }
-#line 1150 "nag.tab.c"
+  case 11: /* logic_exp: ID OPERADOR ID  */
+#line 48 "nag.y"
+                                { exp_curr = create_exp((yyvsp[-2].id), (yyvsp[-1].op), (yyvsp[0].id)); }
+#line 1149 "nag.tab.c"
     break;
 
-  case 12: /* expressaoLogica: OPERADOR ID  */
-#line 55 "nag.y"
-                                    { currentExp = create_exp("", (yyvsp[-1].op), (yyvsp[0].id)); }
-#line 1156 "nag.tab.c"
+  case 12: /* logic_exp: OPERADOR ID  */
+#line 49 "nag.y"
+                                    { exp_curr = create_exp("", (yyvsp[-1].op), (yyvsp[0].id)); }
+#line 1155 "nag.tab.c"
     break;
 
   case 14: /* contexto: ID  */
-#line 59 "nag.y"
-                                { currentExp = create_exp("", "", (yyvsp[0].id)); }
-#line 1162 "nag.tab.c"
+#line 53 "nag.y"
+                                { exp_curr = create_exp("", "", (yyvsp[0].id)); }
+#line 1161 "nag.tab.c"
     break;
 
-  case 17: /* formula_corpo: ID ';' formula_corpo  */
-#line 64 "nag.y"
-                           { currentCorpo = set_new_list(currentCorpo, (yyvsp[-2].id)); }
-#line 1168 "nag.tab.c"
+  case 17: /* set_structure: ID ';' set_structure  */
+#line 58 "nag.y"
+                           { l = set_new_list(l, (yyvsp[-2].id)); }
+#line 1167 "nag.tab.c"
     break;
 
-  case 19: /* nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')'  */
-#line 71 "nag.y"
+  case 19: /* nome_plano: ID '(' event_trigger ';' contexto ';' str ')'  */
+#line 65 "nag.y"
             { 
-                set_new_plan(agent, (yyvsp[-7].id), currentEventoGat, currentExp, currentCorpo); 
-                currentCorpo = NULL;
+                set_new_plan(agent, (yyvsp[-7].id), evt, exp_curr, l); 
+                l = NULL;
             }
-#line 1177 "nag.tab.c"
+#line 1176 "nag.tab.c"
     break;
 
   case 23: /* nome_agente: ID  */
-#line 84 "nag.y"
+#line 76 "nag.y"
                 { agent = set_new_agent((yyvsp[0].id)); }
-#line 1183 "nag.tab.c"
+#line 1182 "nag.tab.c"
     break;
 
   case 28: /* list_stmt: %empty  */
-#line 93 "nag.y"
+#line 85 "nag.y"
            { generate_jason_file(agent); }
-#line 1189 "nag.tab.c"
+#line 1188 "nag.tab.c"
     break;
 
 
-#line 1193 "nag.tab.c"
+#line 1192 "nag.tab.c"
 
       default: break;
     }
@@ -1382,7 +1381,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 98 "nag.y"
+#line 90 "nag.y"
 
 
 

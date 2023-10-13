@@ -56,9 +56,9 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     ID = 258,                      /* ID  */
     OPERADOR = 259,                /* OPERADOR  */
-    CRENCAS = 260,                 /* CRENCAS  */
-    OBJETIVOS = 261,               /* OBJETIVOS  */
-    PLANOS = 262,                  /* PLANOS  */
+    PLANOS = 260,                  /* PLANOS  */
+    CRENCAS = 261,                 /* CRENCAS  */
+    OBJETIVOS = 262,               /* OBJETIVOS  */
     EOL = 263                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;

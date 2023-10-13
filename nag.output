@@ -16,19 +16,19 @@ Grammar
 
     9 event_trigger: ID
 
-   10 expressaoLogica: ID OPERADOR ID
-   11                | OPERADOR ID
+   10 logic_exp: ID OPERADOR ID
+   11          | OPERADOR ID
 
    12 contexto: ε
    13         | ID
-   14         | expressaoLogica
+   14         | logic_exp
 
-   15 formula_corpo: ε
-   16              | ID ';' formula_corpo
+   15 set_structure: ε
+   16              | ID ';' set_structure
 
-   17 corpo: '{' formula_corpo '}'
+   17 str: '{' set_structure '}'
 
-   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')'
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' str ')'
 
    19 planos: ε
    20       | nome_plano ';' planos
@@ -58,9 +58,9 @@ Terminals, with rules where they appear
     error (256)
     ID <id> (258) 1 5 9 10 11 13 16 18 22
     OPERADOR <op> (259) 10 11
-    CRENCAS (260) 26
-    OBJETIVOS (261) 25
-    PLANOS (262) 24
+    PLANOS (260) 24
+    CRENCAS (261) 26
+    OBJETIVOS (262) 25
     EOL (263) 28
 
 
@@ -83,16 +83,16 @@ Nonterminals, with rules where they appear
     event_trigger (20)
         on left: 9
         on right: 18
-    expressaoLogica (21)
+    logic_exp (21)
         on left: 10 11
         on right: 14
     contexto (22)
         on left: 12 13 14
         on right: 18
-    formula_corpo (23)
+    set_structure (23)
         on left: 15 16
         on right: 16 17
-    corpo (24)
+    str (24)
         on left: 17
         on right: 18
     nome_plano (25)
@@ -117,8 +117,8 @@ State 0
     0 $accept: • list_stmt $end
 
     ID         shift, and go to state 1
-    OBJETIVOS  shift, and go to state 2
-    PLANOS     shift, and go to state 3
+    PLANOS     shift, and go to state 2
+    OBJETIVOS  shift, and go to state 3
     '0'        shift, and go to state 4
 
     $end      reduce using rule 27 (list_stmt)
@@ -138,14 +138,14 @@ State 1
 
 State 2
 
-   25 stmt: OBJETIVOS • '{' objetivos '}'
+   24 stmt: PLANOS • '{' planos '}'
 
     '{'  shift, and go to state 8
 
 
 State 3
 
-   24 stmt: PLANOS • '{' planos '}'
+   25 stmt: OBJETIVOS • '{' objetivos '}'
 
     '{'  shift, and go to state 9
 
@@ -180,28 +180,28 @@ State 7
 
 State 8
 
-   25 stmt: OBJETIVOS '{' • objetivos '}'
+   24 stmt: PLANOS '{' • planos '}'
 
     ID   shift, and go to state 13
     '{'  shift, and go to state 14
 
-    $default  reduce using rule 6 (objetivos)
+    $default  reduce using rule 19 (planos)
 
-    nome_objetivo  go to state 15
-    objetivos      go to state 16
+    nome_plano  go to state 15
+    planos      go to state 16
 
 
 State 9
 
-   24 stmt: PLANOS '{' • planos '}'
+   25 stmt: OBJETIVOS '{' • objetivos '}'
 
     ID   shift, and go to state 17
     '{'  shift, and go to state 18
 
-    $default  reduce using rule 19 (planos)
+    $default  reduce using rule 6 (objetivos)
 
-    nome_plano  go to state 19
-    planos      go to state 20
+    nome_objetivo  go to state 19
+    objetivos      go to state 20
 
 
 State 10
@@ -216,8 +216,8 @@ State 11
    28 list_stmt: stmt EOL • list_stmt
 
     ID         shift, and go to state 1
-    OBJETIVOS  shift, and go to state 2
-    PLANOS     shift, and go to state 3
+    PLANOS     shift, and go to state 2
+    OBJETIVOS  shift, and go to state 3
     '0'        shift, and go to state 4
 
     $end      reduce using rule 27 (list_stmt)
@@ -237,68 +237,68 @@ State 12
 
 State 13
 
+   18 nome_plano: ID • '(' event_trigger ';' contexto ';' str ')'
+
+    '('  shift, and go to state 23
+
+
+State 14
+
+   21 planos: '{' • planos '}'
+
+    ID   shift, and go to state 13
+    '{'  shift, and go to state 14
+
+    $default  reduce using rule 19 (planos)
+
+    nome_plano  go to state 15
+    planos      go to state 24
+
+
+State 15
+
+   20 planos: nome_plano • ';' planos
+
+    ';'  shift, and go to state 25
+
+
+State 16
+
+   24 stmt: PLANOS '{' planos • '}'
+
+    '}'  shift, and go to state 26
+
+
+State 17
+
     5 nome_objetivo: ID •
 
     $default  reduce using rule 5 (nome_objetivo)
 
 
-State 14
-
-    8 objetivos: '{' • objetivos '}'
-
-    ID   shift, and go to state 13
-    '{'  shift, and go to state 14
-
-    $default  reduce using rule 6 (objetivos)
-
-    nome_objetivo  go to state 15
-    objetivos      go to state 23
-
-
-State 15
-
-    7 objetivos: nome_objetivo • ';' objetivos
-
-    ';'  shift, and go to state 24
-
-
-State 16
-
-   25 stmt: OBJETIVOS '{' objetivos • '}'
-
-    '}'  shift, and go to state 25
-
-
-State 17
-
-   18 nome_plano: ID • '(' event_trigger ';' contexto ';' corpo ')'
-
-    '('  shift, and go to state 26
-
-
 State 18
 
-   21 planos: '{' • planos '}'
+    8 objetivos: '{' • objetivos '}'
 
     ID   shift, and go to state 17
     '{'  shift, and go to state 18
 
-    $default  reduce using rule 19 (planos)
+    $default  reduce using rule 6 (objetivos)
 
-    nome_plano  go to state 19
-    planos      go to state 27
+    nome_objetivo  go to state 19
+    objetivos      go to state 27
 
 
 State 19
 
-   20 planos: nome_plano • ';' planos
+    7 objetivos: nome_objetivo • ';' objetivos
 
     ';'  shift, and go to state 28
 
 
 State 20
 
-   24 stmt: PLANOS '{' planos • '}'
+   25 stmt: OBJETIVOS '{' objetivos • '}'
 
     '}'  shift, and go to state 29
 
@@ -325,65 +325,65 @@ State 22
 
 State 23
 
-    8 objetivos: '{' objetivos • '}'
+   18 nome_plano: ID '(' • event_trigger ';' contexto ';' str ')'
 
-    '}'  shift, and go to state 34
+    ID  shift, and go to state 34
+
+    event_trigger  go to state 35
 
 
 State 24
 
-    7 objetivos: nome_objetivo ';' • objetivos
+   21 planos: '{' planos • '}'
 
-    ID   shift, and go to state 13
-    '{'  shift, and go to state 14
-
-    $default  reduce using rule 6 (objetivos)
-
-    nome_objetivo  go to state 15
-    objetivos      go to state 35
+    '}'  shift, and go to state 36
 
 
 State 25
 
-   25 stmt: OBJETIVOS '{' objetivos '}' •
+   20 planos: nome_plano ';' • planos
 
-    $default  reduce using rule 25 (stmt)
+    ID   shift, and go to state 13
+    '{'  shift, and go to state 14
+
+    $default  reduce using rule 19 (planos)
+
+    nome_plano  go to state 15
+    planos      go to state 37
 
 
 State 26
 
-   18 nome_plano: ID '(' • event_trigger ';' contexto ';' corpo ')'
+   24 stmt: PLANOS '{' planos '}' •
 
-    ID  shift, and go to state 36
-
-    event_trigger  go to state 37
+    $default  reduce using rule 24 (stmt)
 
 
 State 27
 
-   21 planos: '{' planos • '}'
+    8 objetivos: '{' objetivos • '}'
 
     '}'  shift, and go to state 38
 
 
 State 28
 
-   20 planos: nome_plano ';' • planos
+    7 objetivos: nome_objetivo ';' • objetivos
 
     ID   shift, and go to state 17
     '{'  shift, and go to state 18
 
-    $default  reduce using rule 19 (planos)
+    $default  reduce using rule 6 (objetivos)
 
-    nome_plano  go to state 19
-    planos      go to state 39
+    nome_objetivo  go to state 19
+    objetivos      go to state 39
 
 
 State 29
 
-   24 stmt: PLANOS '{' planos '}' •
+   25 stmt: OBJETIVOS '{' objetivos '}' •
 
-    $default  reduce using rule 24 (stmt)
+    $default  reduce using rule 25 (stmt)
 
 
 State 30
@@ -422,44 +422,44 @@ State 33
 
 State 34
 
-    8 objetivos: '{' objetivos '}' •
-
-    $default  reduce using rule 8 (objetivos)
-
-
-State 35
-
-    7 objetivos: nome_objetivo ';' objetivos •
-
-    $default  reduce using rule 7 (objetivos)
-
-
-State 36
-
     9 event_trigger: ID •
 
     $default  reduce using rule 9 (event_trigger)
 
 
-State 37
+State 35
 
-   18 nome_plano: ID '(' event_trigger • ';' contexto ';' corpo ')'
+   18 nome_plano: ID '(' event_trigger • ';' contexto ';' str ')'
 
     ';'  shift, and go to state 43
 
 
-State 38
+State 36
 
    21 planos: '{' planos '}' •
 
     $default  reduce using rule 21 (planos)
 
 
-State 39
+State 37
 
    20 planos: nome_plano ';' planos •
 
     $default  reduce using rule 20 (planos)
+
+
+State 38
+
+    8 objetivos: '{' objetivos '}' •
+
+    $default  reduce using rule 8 (objetivos)
+
+
+State 39
+
+    7 objetivos: nome_objetivo ';' objetivos •
+
+    $default  reduce using rule 7 (objetivos)
 
 
 State 40
@@ -491,15 +491,15 @@ State 42
 
 State 43
 
-   18 nome_plano: ID '(' event_trigger ';' • contexto ';' corpo ')'
+   18 nome_plano: ID '(' event_trigger ';' • contexto ';' str ')'
 
     ID        shift, and go to state 46
     OPERADOR  shift, and go to state 47
 
     $default  reduce using rule 12 (contexto)
 
-    expressaoLogica  go to state 48
-    contexto         go to state 49
+    logic_exp  go to state 48
+    contexto   go to state 49
 
 
 State 44
@@ -518,7 +518,7 @@ State 45
 
 State 46
 
-   10 expressaoLogica: ID • OPERADOR ID
+   10 logic_exp: ID • OPERADOR ID
    13 contexto: ID •
 
     OPERADOR  shift, and go to state 50
@@ -528,114 +528,114 @@ State 46
 
 State 47
 
-   11 expressaoLogica: OPERADOR • ID
+   11 logic_exp: OPERADOR • ID
 
     ID  shift, and go to state 51
 
 
 State 48
 
-   14 contexto: expressaoLogica •
+   14 contexto: logic_exp •
 
     $default  reduce using rule 14 (contexto)
 
 
 State 49
 
-   18 nome_plano: ID '(' event_trigger ';' contexto • ';' corpo ')'
+   18 nome_plano: ID '(' event_trigger ';' contexto • ';' str ')'
 
     ';'  shift, and go to state 52
 
 
 State 50
 
-   10 expressaoLogica: ID OPERADOR • ID
+   10 logic_exp: ID OPERADOR • ID
 
     ID  shift, and go to state 53
 
 
 State 51
 
-   11 expressaoLogica: OPERADOR ID •
+   11 logic_exp: OPERADOR ID •
 
-    $default  reduce using rule 11 (expressaoLogica)
+    $default  reduce using rule 11 (logic_exp)
 
 
 State 52
 
-   18 nome_plano: ID '(' event_trigger ';' contexto ';' • corpo ')'
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' • str ')'
 
     '{'  shift, and go to state 54
 
-    corpo  go to state 55
+    str  go to state 55
 
 
 State 53
 
-   10 expressaoLogica: ID OPERADOR ID •
+   10 logic_exp: ID OPERADOR ID •
 
-    $default  reduce using rule 10 (expressaoLogica)
+    $default  reduce using rule 10 (logic_exp)
 
 
 State 54
 
-   17 corpo: '{' • formula_corpo '}'
+   17 str: '{' • set_structure '}'
 
     ID  shift, and go to state 56
 
-    $default  reduce using rule 15 (formula_corpo)
+    $default  reduce using rule 15 (set_structure)
 
-    formula_corpo  go to state 57
+    set_structure  go to state 57
 
 
 State 55
 
-   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo • ')'
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' str • ')'
 
     ')'  shift, and go to state 58
 
 
 State 56
 
-   16 formula_corpo: ID • ';' formula_corpo
+   16 set_structure: ID • ';' set_structure
 
     ';'  shift, and go to state 59
 
 
 State 57
 
-   17 corpo: '{' formula_corpo • '}'
+   17 str: '{' set_structure • '}'
 
     '}'  shift, and go to state 60
 
 
 State 58
 
-   18 nome_plano: ID '(' event_trigger ';' contexto ';' corpo ')' •
+   18 nome_plano: ID '(' event_trigger ';' contexto ';' str ')' •
 
     $default  reduce using rule 18 (nome_plano)
 
 
 State 59
 
-   16 formula_corpo: ID ';' • formula_corpo
+   16 set_structure: ID ';' • set_structure
 
     ID  shift, and go to state 56
 
-    $default  reduce using rule 15 (formula_corpo)
+    $default  reduce using rule 15 (set_structure)
 
-    formula_corpo  go to state 61
+    set_structure  go to state 61
 
 
 State 60
 
-   17 corpo: '{' formula_corpo '}' •
+   17 str: '{' set_structure '}' •
 
-    $default  reduce using rule 17 (corpo)
+    $default  reduce using rule 17 (str)
 
 
 State 61
 
-   16 formula_corpo: ID ';' formula_corpo •
+   16 set_structure: ID ';' set_structure •
 
-    $default  reduce using rule 16 (formula_corpo)
+    $default  reduce using rule 16 (set_structure)
