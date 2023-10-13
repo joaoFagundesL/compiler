@@ -1,7 +1,7 @@
 all: nag
 
 nag.tab.c nag.tab.h: nag.y
-	bison -t -v -d nag.y
+	bison -d nag.y
 
 lex.yy.c: nag.l nag.tab.h
 	flex nag.l

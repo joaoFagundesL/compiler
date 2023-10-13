@@ -2,5 +2,7 @@ naotenhoGuardaChuva.
 estaChovendo.
 
 +comprarGuardaChuva : estaChovendo & naotenhoGuardaChuva
-  <- !sair     !procurarLoja     !comprarGuardaChuva.
+  <- !sair;
+     !procurarLoja;
+     !comprarGuardaChuva.
 

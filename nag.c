@@ -150,56 +150,64 @@ set_new_list (struct list *l, const char *name)
   l = new_val;
   return l;
 }
+
 void generate_jason_file(struct head *a) {
-    FILE *fptr;
-    char finalAddress[100] = "./";
+    char addr[BUFFER * 2] = { 0 };
     char termination[] = ".asl";
-    strcat(finalAddress, a->name_agent);
-    strcat(finalAddress, termination);
 
-    fptr = fopen(finalAddress, "w");
+    snprintf(addr, sizeof(addr), "./%s%s", a->name_agent, termination);
 
-    for (struct node *auxCrenca = a->crencas; auxCrenca != NULL; auxCrenca = auxCrenca->next) {
-        fprintf(fptr, "%s.\n", auxCrenca->name);
-    }
+    FILE *fptr = fopen(addr, "w");
 
-    fprintf(fptr, "\n");
+    for (struct node *tmp_crenca = a->crencas; tmp_crenca != NULL; tmp_crenca = tmp_crenca->next)
+        fprintf(fptr, "%s.\n", tmp_crenca->name);
 
-    for (struct node *auxPlanos = a->planos; auxPlanos != NULL; auxPlanos = auxPlanos->next) {
-        fprintf(fptr, "+%s : ", auxPlanos->event_trigger);
+    for (struct node *tmp_plano = a->planos; tmp_plano != NULL; tmp_plano = tmp_plano->next) {
+        fprintf(fptr, "\n+%s : ", tmp_plano->event_trigger);
 
-        char* complemento = auxPlanos->expressaoCont->complemento;
-        char* contexto1 = auxPlanos->expressaoCont->contexto1;
-        char* contexto2 = auxPlanos->expressaoCont->contexto2;
+        char* complemento = tmp_plano->expressaoCont->complemento;
+        char* contexto1 = tmp_plano->expressaoCont->contexto1;
+        char* contexto2 = tmp_plano->expressaoCont->contexto2;
 
-        if (!strcmp(complemento, "E")) {
-            fprintf(fptr, "%s & %s\n", contexto1, contexto2);
-        } else if (!strcmp(complemento, "OU")) {
-            fprintf(fptr, "%s | %s\n", contexto1, contexto2);
-        } else if (!strcmp(complemento, "NAO")) {
-            fprintf(fptr, "not %s\n", contexto2);
-        } else {
-            fprintf(fptr, "%s\n", contexto2);
+        switch (complemento[0]) {
+            case 'E':
+                fprintf(fptr, "%s & %s\n", contexto1, contexto2);
+                break;
+            case 'O':
+                fprintf(fptr, "%s | %s\n", contexto1, contexto2);
+                break;
+            case 'N':
+                fprintf(fptr, "not %s\n", contexto2);
+                break;
+            default:
+                fprintf(fptr, "%s\n", contexto2);
+                break;
         }
 
-        struct list *auxcorpo = auxPlanos->list;
+        struct list *struc = tmp_plano->list;
 
-        if (auxcorpo != NULL) {
+        if (struc != NULL) {
             fprintf(fptr, "  <- ");
 
-            fprintf(fptr, "!%s", auxcorpo->name);
-            auxcorpo = auxcorpo->next;
+            fprintf(fptr, "!%s;\n", struc->name);
+            struc = struc->next;
 
-            while (auxcorpo != NULL) {
-                fprintf(fptr, "     !%s", auxcorpo->name);
-                auxcorpo = auxcorpo->next;
+            while (struc != NULL) {
+                if(struc->next == NULL) 
+                    fprintf(fptr, "     !%s.\n", struc->name);
+                    
+                else
+                    fprintf(fptr, "     !%s;\n", struc->name);
+
+                struc = struc->next;
             }
 
-            fprintf(fptr, ".\n");
-        }
+            fprintf(fptr, "\n");
 
-        fprintf(fptr, "\n");
+        } else 
+            fprintf(fptr, ".\n");
     }
 
     fclose(fptr);
 }
+
