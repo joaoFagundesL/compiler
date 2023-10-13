@@ -1163,7 +1163,7 @@ yyreduce:
 
   case 17: /* formula_corpo: ID ';' formula_corpo  */
 #line 64 "nag.y"
-                           { currentCorpo = list(currentCorpo, (yyvsp[-2].id)); }
+                           { currentCorpo = set_new_list(currentCorpo, (yyvsp[-2].id)); }
 #line 1168 "nag.tab.c"
     break;
 

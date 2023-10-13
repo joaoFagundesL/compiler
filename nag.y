@@ -61,7 +61,7 @@ contexto: /* Vazio */
     ;
 
 formula_corpo: /* Vazio */
-    | ID ';' formula_corpo { currentCorpo = list(currentCorpo, $1); }     
+    | ID ';' formula_corpo { currentCorpo = set_new_list(currentCorpo, $1); }     
     ;
 
 corpo: '{' formula_corpo '}'

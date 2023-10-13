@@ -128,7 +128,7 @@ create_exp (char *name1, char *comp, char *name2)
 }
 
 struct list *
-list (struct list *l, const char *name)
+set_new_list (struct list *l, const char *name)
 {
   struct list *new_val = malloc (sizeof (struct list));
   if (!new_val)

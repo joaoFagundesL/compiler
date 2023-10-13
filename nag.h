@@ -39,6 +39,6 @@ void set_new_plan(struct head *a, const char *name, char *eg,
                struct expr *exp, struct list *list);
 
 struct expr *create_exp(char *name1, char *comp, char *name2);
-struct list *list(struct list *cl, const char *name);
+struct list *set_new_list(struct list *cl, const char *name);
 
 void generate_jason_file(struct head *a);
