@@ -54,12 +54,12 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    ID = 258,                      /* ID  */
-    OPERADOR = 259,                /* OPERADOR  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    OPERATOR = 259,                /* OPERATOR  */
     PLANOS = 260,                  /* PLANOS  */
     CRENCAS = 261,                 /* CRENCAS  */
     OBJETIVOS = 262,               /* OBJETIVOS  */
-    EOL = 263                      /* EOL  */
+    END_OF_LINE = 263              /* END_OF_LINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -70,8 +70,8 @@ union YYSTYPE
 {
 #line 16 "nag.y"
 
-    char *op;
-    char *id;
+    char *operator;
+    char *identifier;
 
 #line 77 "nag.tab.h"
 

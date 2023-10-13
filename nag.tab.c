@@ -75,7 +75,7 @@
     #include "nag.h"
     #include "nag.tab.h"
 
-    struct head *agent;
+    struct head *custom_agent;
     char *evt;
     struct expr *exp_curr;
     struct list *l = NULL;
@@ -113,12 +113,12 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_ID = 3,                         /* ID  */
-  YYSYMBOL_OPERADOR = 4,                   /* OPERADOR  */
+  YYSYMBOL_IDENTIFIER = 3,                 /* IDENTIFIER  */
+  YYSYMBOL_OPERATOR = 4,                   /* OPERATOR  */
   YYSYMBOL_PLANOS = 5,                     /* PLANOS  */
   YYSYMBOL_CRENCAS = 6,                    /* CRENCAS  */
   YYSYMBOL_OBJETIVOS = 7,                  /* OBJETIVOS  */
-  YYSYMBOL_EOL = 8,                        /* EOL  */
+  YYSYMBOL_END_OF_LINE = 8,                /* END_OF_LINE  */
   YYSYMBOL_9_ = 9,                         /* ';'  */
   YYSYMBOL_10_ = 10,                       /* '{'  */
   YYSYMBOL_11_ = 11,                       /* '}'  */
@@ -545,11 +545,12 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "ID", "OPERADOR",
-  "PLANOS", "CRENCAS", "OBJETIVOS", "EOL", "';'", "'{'", "'}'", "'('",
-  "')'", "'0'", "$accept", "nome_crenca", "crencas", "nome_objetivo",
-  "objetivos", "event_trigger", "logic_exp", "contexto", "set_structure",
-  "str", "nome_plano", "planos", "nome_agente", "stmt", "list_stmt", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER",
+  "OPERATOR", "PLANOS", "CRENCAS", "OBJETIVOS", "END_OF_LINE", "';'",
+  "'{'", "'}'", "'('", "')'", "'0'", "$accept", "nome_crenca", "crencas",
+  "nome_objetivo", "objetivos", "event_trigger", "logic_exp", "contexto",
+  "set_structure", "str", "nome_plano", "planos", "nome_agente", "stmt",
+  "list_stmt", YY_NULLPTR
 };
 
 static const char *
@@ -1124,71 +1125,71 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* nome_crenca: ID  */
+  case 2: /* nome_crenca: IDENTIFIER  */
 #line 30 "nag.y"
-                { set_new_belief(agent, (yyvsp[0].id)); }
-#line 1131 "nag.tab.c"
+                        { set_new_belief(custom_agent, (yyvsp[0].identifier)); }
+#line 1132 "nag.tab.c"
     break;
 
-  case 6: /* nome_objetivo: ID  */
+  case 6: /* nome_objetivo: IDENTIFIER  */
 #line 38 "nag.y"
-                  { set_new_goal(agent, (yyvsp[0].id)); }
-#line 1137 "nag.tab.c"
+                          { set_new_goal(custom_agent, (yyvsp[0].identifier)); }
+#line 1138 "nag.tab.c"
     break;
 
-  case 10: /* event_trigger: ID  */
+  case 10: /* event_trigger: IDENTIFIER  */
 #line 46 "nag.y"
-                               { evt = (yyvsp[0].id); }
-#line 1143 "nag.tab.c"
+                                       { evt = (yyvsp[0].identifier); }
+#line 1144 "nag.tab.c"
     break;
 
-  case 11: /* logic_exp: ID OPERADOR ID  */
+  case 11: /* logic_exp: IDENTIFIER OPERATOR IDENTIFIER  */
 #line 49 "nag.y"
-                                { exp_curr = create_exp((yyvsp[-2].id), (yyvsp[-1].op), (yyvsp[0].id)); }
-#line 1149 "nag.tab.c"
+                                                { exp_curr = create_exp((yyvsp[-2].identifier), (yyvsp[-1].operator), (yyvsp[0].identifier)); }
+#line 1150 "nag.tab.c"
     break;
 
-  case 12: /* logic_exp: OPERADOR ID  */
+  case 12: /* logic_exp: OPERATOR IDENTIFIER  */
 #line 50 "nag.y"
-                                    { exp_curr = create_exp("", (yyvsp[-1].op), (yyvsp[0].id)); }
-#line 1155 "nag.tab.c"
+                                            { exp_curr = create_exp("", (yyvsp[-1].operator), (yyvsp[0].identifier)); }
+#line 1156 "nag.tab.c"
     break;
 
-  case 14: /* contexto: ID  */
+  case 14: /* contexto: IDENTIFIER  */
 #line 54 "nag.y"
-                                { exp_curr = create_exp("", "", (yyvsp[0].id)); }
-#line 1161 "nag.tab.c"
+                                        { exp_curr = create_exp("", "", (yyvsp[0].identifier)); }
+#line 1162 "nag.tab.c"
     break;
 
-  case 17: /* set_structure: ID ';' set_structure  */
+  case 17: /* set_structure: IDENTIFIER ';' set_structure  */
 #line 59 "nag.y"
-                           { l = set_new_list(l, (yyvsp[-2].id)); }
-#line 1167 "nag.tab.c"
+                                   { l = set_new_list(l, (yyvsp[-2].identifier)); }
+#line 1168 "nag.tab.c"
     break;
 
-  case 19: /* nome_plano: ID '(' event_trigger ';' contexto ';' str ')'  */
+  case 19: /* nome_plano: IDENTIFIER '(' event_trigger ';' contexto ';' str ')'  */
 #line 66 "nag.y"
             { 
-                set_new_plan(agent, (yyvsp[-7].id), evt, exp_curr, l); 
+                set_new_plan(custom_agent, (yyvsp[-7].identifier), evt, exp_curr, l); 
                 l = NULL;
             }
-#line 1176 "nag.tab.c"
+#line 1177 "nag.tab.c"
     break;
 
-  case 23: /* nome_agente: ID  */
+  case 23: /* nome_agente: IDENTIFIER  */
 #line 77 "nag.y"
-                { agent = set_new_agent((yyvsp[0].id)); }
-#line 1182 "nag.tab.c"
+                        { custom_agent = set_new_agent((yyvsp[0].identifier)); }
+#line 1183 "nag.tab.c"
     break;
 
   case 28: /* list_stmt: %empty  */
 #line 86 "nag.y"
-           { generate_jason_file(agent); }
-#line 1188 "nag.tab.c"
+           { generate_jason_file(custom_agent); }
+#line 1189 "nag.tab.c"
     break;
 
 
-#line 1192 "nag.tab.c"
+#line 1193 "nag.tab.c"
 
       default: break;
     }

@@ -14,10 +14,10 @@
 "crencas:"			{ return CRENCAS; }
 "objetivos:"	    { return OBJETIVOS; }
 "planos:"	        { return PLANOS; }
-"E"|"OU"|"NAO"      { yylval.op = strdup(yytext); return OPERADOR; }
+"E"|"OU"|"NAO"      { yylval.operator = strdup(yytext); return OPERATOR; }
 "("|")"|"{"|"}"|";"	{ return yytext[0]; }
-[a-zA-Z_][a-zA-Z0-9_]*		        { yylval.id = strdup(yytext); return ID; }
-"\n"	            { return EOL; }
+[a-zA-Z_][a-zA-Z0-9_]*		        { yylval.identifier = strdup(yytext); return IDENTIFIER; }
+"\n"	            { return END_OF_LINE; }
 <<EOF>>             { return 0; }
 [ \t]		        ;
 .			        { fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); return 0; }

@@ -805,7 +805,7 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 17 "nag.l"
-{ yylval.op = strdup(yytext); return OPERADOR; }
+{ yylval.operator = strdup(yytext); return OPERATOR; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -815,13 +815,13 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 19 "nag.l"
-{ yylval.id = strdup(yytext); return ID; }
+{ yylval.identifier = strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
 #line 20 "nag.l"
-{ return EOL; }
+{ return END_OF_LINE; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 #line 21 "nag.l"

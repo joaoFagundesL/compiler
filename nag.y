@@ -5,7 +5,7 @@
     #include "nag.h"
     #include "nag.tab.h"
 
-    struct head *agent;
+    struct head *custom_agent;
     char *evt;
     struct expr *exp_curr;
     struct list *l = NULL;
@@ -14,20 +14,20 @@
 %}
 
 %union {
-    char *op;
-    char *id;
+    char *operator;
+    char *identifier;
 }
 
-%token <id> ID
-%token <op> OPERADOR
+%token <identifier> IDENTIFIER
+%token <operator> OPERATOR
 %token PLANOS CRENCAS OBJETIVOS
-%token EOL
+%token END_OF_LINE
 
 %start list_stmt
 
 %%
 
-nome_crenca: ID { set_new_belief(agent, $1); }
+nome_crenca: IDENTIFIER { set_new_belief(custom_agent, $1); }
     ;
 
 crencas: 
@@ -35,7 +35,7 @@ crencas:
     | '{' crencas '}'  
 	;
 
-nome_objetivo: ID { set_new_goal(agent, $1); }
+nome_objetivo: IDENTIFIER { set_new_goal(custom_agent, $1); }
     ;
 
 objetivos: 
@@ -43,28 +43,28 @@ objetivos:
     | '{' objetivos '}'
 	;
 
-event_trigger: ID              { evt = $1; }
+event_trigger: IDENTIFIER              { evt = $1; }
     ;
 
-logic_exp: ID OPERADOR ID	{ exp_curr = create_exp($1, $2, $3); }
-	| OPERADOR ID               { exp_curr = create_exp("", $1, $2); }  
+logic_exp: IDENTIFIER OPERATOR IDENTIFIER	{ exp_curr = create_exp($1, $2, $3); }
+	| OPERATOR IDENTIFIER               { exp_curr = create_exp("", $1, $2); }  
     ;
 
 contexto: 
-    | ID                        { exp_curr = create_exp("", "", $1); }
+    | IDENTIFIER                        { exp_curr = create_exp("", "", $1); }
     | logic_exp	          
     ;
 
 set_structure: 
-    | ID ';' set_structure { l = set_new_list(l, $1); }     
+    | IDENTIFIER ';' set_structure { l = set_new_list(l, $1); }     
     ;
 
 str: '{' set_structure '}'
     ;
 
-nome_plano: ID '(' event_trigger ';' contexto ';' str ')' 
+nome_plano: IDENTIFIER '(' event_trigger ';' contexto ';' str ')' 
             { 
-                set_new_plan(agent, $1, evt, exp_curr, l); 
+                set_new_plan(custom_agent, $1, evt, exp_curr, l); 
                 l = NULL;
             }
     ;
@@ -74,7 +74,7 @@ planos:
     | '{' planos '}'	       
     ;
 
-nome_agente: ID { agent = set_new_agent($1); }
+nome_agente: IDENTIFIER { custom_agent = set_new_agent($1); }
     ;
 
 stmt:                         
@@ -83,8 +83,8 @@ stmt:
     | nome_agente CRENCAS '{' crencas '}'
 	;
 
-list_stmt: { generate_jason_file(agent); }
-	| stmt EOL list_stmt
+list_stmt: { generate_jason_file(custom_agent); }
+	| stmt END_OF_LINE list_stmt
 	| '0'
 	;
 

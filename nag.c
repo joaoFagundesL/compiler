@@ -13,7 +13,6 @@ yyerror (char *s)
   fprintf (stderr, "%s: error: ", s);
 }
 
-// Function to allocate memory for a new agent.
 struct head *allocate_agent(const char *name) {
     struct head *tmp_agent = (struct head *)malloc(sizeof(struct head));
     if (!tmp_agent) {
@@ -90,7 +89,7 @@ struct node *allocate_plan_node(const char *name, const char *eg, struct expr *e
     strncpy(new->event_trigger, eg, sizeof(new->event_trigger) - 1);
     new->event_trigger[sizeof(new->event_trigger) - 1] = '\0';
 
-    new->expressaoCont = exp;
+    new->ctx_expr = exp;
     new->list = list;
 
     return new;
@@ -103,8 +102,8 @@ void add_new_plan(struct head *a, struct node *new) {
 
 void print_plan_details(struct node *new) {
     printf(" PLANO <%s> : GATILHO -> %s | CONTEXTO -> %s %s %s | CORPO -> ",
-           new->name, new->event_trigger, new->expressaoCont->contexto1,
-           new->expressaoCont->complemento, new->expressaoCont->contexto2);
+           new->name, new->event_trigger, new->ctx_expr->contexto1,
+           new->ctx_expr->complemento, new->ctx_expr->contexto2);
 
     for (struct list *tmp_list = new->list; tmp_list != NULL; tmp_list = tmp_list->next) {
         printf("<%s> ", tmp_list->name);
@@ -248,9 +247,9 @@ write_plans (FILE *fptr, const struct node *planos)
     {
       fprintf (fptr, "\n+%s : ", tmp_plano->event_trigger);
 
-      char *complemento = tmp_plano->expressaoCont->complemento;
-      char *contexto1 = tmp_plano->expressaoCont->contexto1;
-      char *contexto2 = tmp_plano->expressaoCont->contexto2;
+      char *complemento = tmp_plano->ctx_expr->complemento;
+      char *contexto1 = tmp_plano->ctx_expr->contexto1;
+      char *contexto2 = tmp_plano->ctx_expr->contexto2;
 
       switch (complemento[0])
 	{
