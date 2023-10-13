@@ -9,17 +9,24 @@
 %option yylineno
 %option noyywrap
 
+new_line \n
+space [ \t]
+
 %%
 
 "crencas:"			{ return CRENCAS; }
 "objetivos:"	    { return OBJETIVOS; }
 "planos:"	        { return PLANOS; }
 "E"|"OU"|"NAO"      { yylval.operator = strdup(yytext); return OPERATOR; }
-"("|")"|"{"|"}"|";"	{ return yytext[0]; }
+"("             { return LPAREN; }
+")"               { return RPAREN; }
+"{"             { return LCURLY; }
+"}"               { return RCURLY; }
+";"             { return SEMI; }
 [a-zA-Z_][a-zA-Z0-9_]*		        { yylval.identifier = strdup(yytext); return IDENTIFIER; }
-"\n"	            { return END_OF_LINE; }
+{new_line}	            { return END_OF_LINE; }
 <<EOF>>             { return 0; }
-[ \t]		        ;
+{space}		        ;
 .			        { fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); return 0; }
 
 %%

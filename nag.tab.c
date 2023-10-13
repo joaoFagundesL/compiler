@@ -119,11 +119,11 @@ enum yysymbol_kind_t
   YYSYMBOL_CRENCAS = 6,                    /* CRENCAS  */
   YYSYMBOL_OBJETIVOS = 7,                  /* OBJETIVOS  */
   YYSYMBOL_END_OF_LINE = 8,                /* END_OF_LINE  */
-  YYSYMBOL_9_ = 9,                         /* ';'  */
-  YYSYMBOL_10_ = 10,                       /* '{'  */
-  YYSYMBOL_11_ = 11,                       /* '}'  */
-  YYSYMBOL_12_ = 12,                       /* '('  */
-  YYSYMBOL_13_ = 13,                       /* ')'  */
+  YYSYMBOL_LCURLY = 9,                     /* LCURLY  */
+  YYSYMBOL_RCURLY = 10,                    /* RCURLY  */
+  YYSYMBOL_LPAREN = 11,                    /* LPAREN  */
+  YYSYMBOL_RPAREN = 12,                    /* RPAREN  */
+  YYSYMBOL_SEMI = 13,                      /* SEMI  */
   YYSYMBOL_14_0_ = 14,                     /* '0'  */
   YYSYMBOL_YYACCEPT = 15,                  /* $accept  */
   YYSYMBOL_nome_crenca = 16,               /* nome_crenca  */
@@ -467,7 +467,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   50
+#define YYLAST   51
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  15
@@ -479,7 +479,7 @@ union yyalloc
 #define YYNSTATES  62
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   263
+#define YYMAXUTOK   268
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -497,15 +497,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      12,    13,     2,     2,     2,     2,     2,     2,    14,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     9,
+       2,     2,     2,     2,     2,     2,     2,     2,    14,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    10,     2,    11,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -519,17 +519,17 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8
+       5,     6,     7,     8,     9,    10,    11,    12,    13
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    30,    30,    33,    34,    35,    38,    41,    42,    43,
-      46,    49,    50,    53,    54,    55,    58,    59,    62,    65,
-      72,    73,    74,    77,    80,    81,    82,    83,    86,    87,
-      88
+       0,    31,    31,    34,    35,    36,    39,    42,    43,    44,
+      47,    50,    51,    54,    55,    56,    59,    60,    63,    66,
+      73,    74,    75,    78,    81,    82,    83,    84,    87,    88,
+      89
 };
 #endif
 
@@ -546,11 +546,11 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER",
-  "OPERATOR", "PLANOS", "CRENCAS", "OBJETIVOS", "END_OF_LINE", "';'",
-  "'{'", "'}'", "'('", "')'", "'0'", "$accept", "nome_crenca", "crencas",
-  "nome_objetivo", "objetivos", "event_trigger", "logic_exp", "contexto",
-  "set_structure", "str", "nome_plano", "planos", "nome_agente", "stmt",
-  "list_stmt", YY_NULLPTR
+  "OPERATOR", "PLANOS", "CRENCAS", "OBJETIVOS", "END_OF_LINE", "LCURLY",
+  "RCURLY", "LPAREN", "RPAREN", "SEMI", "'0'", "$accept", "nome_crenca",
+  "crencas", "nome_objetivo", "objetivos", "event_trigger", "logic_exp",
+  "contexto", "set_structure", "str", "nome_plano", "planos",
+  "nome_agente", "stmt", "list_stmt", YY_NULLPTR
 };
 
 static const char *
@@ -560,7 +560,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-28)
+#define YYPACT_NINF (-31)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -574,13 +574,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       0,   -28,     3,     5,   -28,    15,    14,    23,    -1,     1,
-      17,     0,   -28,    12,    -1,    19,    18,   -28,     1,    21,
-      20,     7,   -28,    22,    24,    -1,   -28,    25,     1,   -28,
-     -28,     7,    28,    27,   -28,    30,   -28,   -28,   -28,   -28,
-      29,     7,   -28,    16,   -28,   -28,    37,    31,   -28,    33,
-      40,   -28,    34,   -28,    42,    13,    38,    35,   -28,    42,
-     -28,   -28
+       0,   -31,    -7,     4,   -31,    15,    14,    23,     1,     6,
+      17,     0,   -31,    13,     1,    12,    18,   -31,     6,    19,
+      20,     8,   -31,    24,    21,     1,   -31,    25,     6,   -31,
+     -31,     8,    26,    27,   -31,    28,   -31,   -31,   -31,   -31,
+      30,     8,   -31,    16,   -31,   -31,    29,    31,   -31,    32,
+      33,   -31,    34,   -31,    35,    36,    37,    39,   -31,    35,
+     -31,   -31
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -600,8 +600,8 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -28,   -28,   -25,   -28,   -10,   -28,   -28,   -28,   -27,   -28,
-     -28,   -13,   -28,   -28,    39
+     -31,   -31,   -25,   -31,   -10,   -31,   -31,   -31,   -30,   -31,
+     -31,   -13,   -31,   -31,    40
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -616,35 +616,35 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-     -28,    24,    13,     1,    17,     2,    40,     3,    27,    14,
-      30,    18,    37,     8,     4,     9,    45,    31,    39,    46,
-      47,    10,    11,    12,    23,    34,    58,    21,    25,    26,
-      28,    29,    61,     0,    51,    36,    38,    41,    42,    43,
-      44,    50,    52,    53,    54,    56,    60,    59,     0,     0,
-      22
+     -28,    24,     8,     1,    13,     2,    40,     3,    27,    17,
+      14,    30,    37,     9,     4,    18,    45,    31,    39,    46,
+      47,    10,    11,    12,    23,    25,    21,    34,    26,    61,
+      29,    36,    28,    50,    51,    38,    53,    42,    56,    41,
+      44,    43,     0,    54,     0,    52,     0,     0,    58,    60,
+      59,    22
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    14,     3,     3,     3,     5,    31,     7,    18,    10,
-       3,    10,    25,    10,    14,    10,    41,    10,    28,     3,
-       4,     6,     8,     0,    12,     3,    13,    10,     9,    11,
-       9,    11,    59,    -1,     3,    11,    11,     9,    11,     9,
-      11,     4,     9,     3,    10,     3,    11,     9,    -1,    -1,
-      11
+       0,    14,     9,     3,     3,     5,    31,     7,    18,     3,
+       9,     3,    25,     9,    14,     9,    41,     9,    28,     3,
+       4,     6,     8,     0,    11,    13,     9,     3,    10,    59,
+      10,    10,    13,     4,     3,    10,     3,    10,     3,    13,
+      10,    13,    -1,     9,    -1,    13,    -1,    -1,    12,    10,
+      13,    11
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     5,     7,    14,    27,    28,    29,    10,    10,
-       6,     8,     0,     3,    10,    25,    26,     3,    10,    18,
-      19,    10,    29,    12,    26,     9,    11,    19,     9,    11,
-       3,    10,    16,    17,     3,    20,    11,    26,    11,    19,
-      17,     9,    11,     9,    11,    17,     3,     4,    21,    22,
-       4,     3,     9,     3,    10,    24,     3,    23,    13,     9,
-      11,    23
+       0,     3,     5,     7,    14,    27,    28,    29,     9,     9,
+       6,     8,     0,     3,     9,    25,    26,     3,     9,    18,
+      19,     9,    29,    11,    26,    13,    10,    19,    13,    10,
+       3,     9,    16,    17,     3,    20,    10,    26,    10,    19,
+      17,    13,    10,    13,    10,    17,     3,     4,    21,    22,
+       4,     3,    13,     3,     9,    24,     3,    23,    12,    13,
+      10,    23
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -1126,49 +1126,49 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* nome_crenca: IDENTIFIER  */
-#line 30 "nag.y"
+#line 31 "nag.y"
                         { set_new_belief(custom_agent, (yyvsp[0].identifier)); }
 #line 1132 "nag.tab.c"
     break;
 
   case 6: /* nome_objetivo: IDENTIFIER  */
-#line 38 "nag.y"
+#line 39 "nag.y"
                           { set_new_goal(custom_agent, (yyvsp[0].identifier)); }
 #line 1138 "nag.tab.c"
     break;
 
   case 10: /* event_trigger: IDENTIFIER  */
-#line 46 "nag.y"
+#line 47 "nag.y"
                                        { evt = (yyvsp[0].identifier); }
 #line 1144 "nag.tab.c"
     break;
 
   case 11: /* logic_exp: IDENTIFIER OPERATOR IDENTIFIER  */
-#line 49 "nag.y"
+#line 50 "nag.y"
                                                 { exp_curr = create_exp((yyvsp[-2].identifier), (yyvsp[-1].operator), (yyvsp[0].identifier)); }
 #line 1150 "nag.tab.c"
     break;
 
   case 12: /* logic_exp: OPERATOR IDENTIFIER  */
-#line 50 "nag.y"
+#line 51 "nag.y"
                                             { exp_curr = create_exp("", (yyvsp[-1].operator), (yyvsp[0].identifier)); }
 #line 1156 "nag.tab.c"
     break;
 
   case 14: /* contexto: IDENTIFIER  */
-#line 54 "nag.y"
+#line 55 "nag.y"
                                         { exp_curr = create_exp("", "", (yyvsp[0].identifier)); }
 #line 1162 "nag.tab.c"
     break;
 
-  case 17: /* set_structure: IDENTIFIER ';' set_structure  */
-#line 59 "nag.y"
-                                   { l = set_new_list(l, (yyvsp[-2].identifier)); }
+  case 17: /* set_structure: IDENTIFIER SEMI set_structure  */
+#line 60 "nag.y"
+                                    { l = set_new_list(l, (yyvsp[-2].identifier)); }
 #line 1168 "nag.tab.c"
     break;
 
-  case 19: /* nome_plano: IDENTIFIER '(' event_trigger ';' contexto ';' str ')'  */
-#line 66 "nag.y"
+  case 19: /* nome_plano: IDENTIFIER LPAREN event_trigger SEMI contexto SEMI str RPAREN  */
+#line 67 "nag.y"
             { 
                 set_new_plan(custom_agent, (yyvsp[-7].identifier), evt, exp_curr, l); 
                 l = NULL;
@@ -1177,13 +1177,13 @@ yyreduce:
     break;
 
   case 23: /* nome_agente: IDENTIFIER  */
-#line 77 "nag.y"
+#line 78 "nag.y"
                         { custom_agent = set_new_agent((yyvsp[0].identifier)); }
 #line 1183 "nag.tab.c"
     break;
 
   case 28: /* list_stmt: %empty  */
-#line 86 "nag.y"
+#line 87 "nag.y"
            { generate_jason_file(custom_agent); }
 #line 1189 "nag.tab.c"
     break;
@@ -1382,4 +1382,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 91 "nag.y"
+#line 92 "nag.y"

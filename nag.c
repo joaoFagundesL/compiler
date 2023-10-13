@@ -6,6 +6,9 @@
 #include <string.h>
 
 int yyparse ();
+extern int yylex();
+extern int yylineno;
+extern char* yytext;
 
 void
 yyerror (char *s)

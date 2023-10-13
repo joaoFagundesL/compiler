@@ -59,7 +59,12 @@ extern int yydebug;
     PLANOS = 260,                  /* PLANOS  */
     CRENCAS = 261,                 /* CRENCAS  */
     OBJETIVOS = 262,               /* OBJETIVOS  */
-    END_OF_LINE = 263              /* END_OF_LINE  */
+    END_OF_LINE = 263,             /* END_OF_LINE  */
+    LCURLY = 264,                  /* LCURLY  */
+    RCURLY = 265,                  /* RCURLY  */
+    LPAREN = 266,                  /* LPAREN  */
+    RPAREN = 267,                  /* RPAREN  */
+    SEMI = 268                     /* SEMI  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,7 +78,7 @@ union YYSTYPE
     char *operator;
     char *identifier;
 
-#line 77 "nag.tab.h"
+#line 82 "nag.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
