@@ -295,6 +295,36 @@ write_plans (FILE *fptr, const struct node *planos)
 	fprintf (fptr, ".\n");
     }
 }
+void free_beliefs(struct node *belief) {
+    while (belief != NULL) {
+        struct node *temp = belief;
+        belief = belief->next;
+        free(temp);
+    }
+}
+
+void free_goals(struct node *goal) {
+    while (goal != NULL) {
+        struct node *temp = goal;
+        goal = goal->next;
+        free(temp);
+    }
+}
+
+void free_plans(struct node *plan) {
+    while (plan != NULL) {
+        struct node *temp = plan;
+        plan = plan->next;
+        free(temp);
+    }
+}
+
+void free_agent(struct head *a) {
+    free_beliefs(a->crencas);
+    free_goals(a->objetivos);
+    free_plans(a->planos);
+    free(a);
+}
 
 void
 generate_jason_file (struct head *a)

@@ -37,6 +37,12 @@ struct expr
   char contexto2[BUFFER];
 };
 
+
+void free_agent(struct head *a);
+static void free_beliefs(struct node *belief);
+static void free_goals(struct node *goal);
+static void free_plans(struct node *plan);
+
 struct head *set_new_agent (const char *name);
 void yyerror (char *s);
 void set_new_belief (struct head *a, const char *name);

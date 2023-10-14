@@ -84,9 +84,16 @@ stmt:
     | nome_agente CRENCAS LCURLY crencas RCURLY
 	;
 
+end_of_program:
+    {
+        free_agent(custom_agent);
+    }
+    ;
+
+
 list_stmt: { generate_jason_file(custom_agent); }
 	| stmt END_OF_LINE list_stmt
-	| '0'
+	| '0' end_of_program
 	;
 
 %%
