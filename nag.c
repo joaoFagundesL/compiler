@@ -319,7 +319,7 @@ free_agent (struct head *a)
 void
 generate_file_name (char *addr, const struct head *a)
 {
-  snprintf (addr, BUFFER * 2, "./%s.asl", a->name_agent);
+  snprintf (addr, BUFFER * 2, "./aslgenerated/%s.asl", a->name_agent);
 }
 
 void
