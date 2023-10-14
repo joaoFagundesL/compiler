@@ -2,7 +2,7 @@
 #ifndef NAG_H
 #define NAG_H
 
-#define BUFFER 50
+#define BUFFER 65
 #include <stdio.h>
 
 extern int yylineno;

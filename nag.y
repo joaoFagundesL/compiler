@@ -78,12 +78,13 @@ planos:
 nome_agente: IDENTIFIER { custom_agent = set_new_agent($1); }
     ;
 
-stmt:                         
+stmt:   
+        END_OF_LINE                      
 	| PLANOS LCURLY planos RCURLY 
 	| OBJETIVOS	LCURLY objetivos RCURLY
     | nome_agente CRENCAS LCURLY crencas RCURLY
 	;
-
+    
 end_of_program:
     {
         free_agent(custom_agent);
@@ -92,7 +93,7 @@ end_of_program:
 
 
 list_stmt: { generate_jason_file(custom_agent); }
-	| stmt END_OF_LINE list_stmt
+	| stmt list_stmt
 	| '0' end_of_program
 	;
 

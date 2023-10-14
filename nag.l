@@ -26,7 +26,7 @@ space [ \t]
 [a-zA-Z_][a-zA-Z0-9_]*		        { yylval.identifier = strdup(yytext); return IDENTIFIER; }
 "//".*					/* Ignora comentarios */
 "/*".*"*/" 				/* Ignora comentarios */
-{new_line}	            { return END_OF_LINE; }
+{new_line}	            /*{ return END_OF_LINE; }*/
 <<EOF>>             { return 0; }
 {space}		        ;
 .			        { fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); return 0; }
