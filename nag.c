@@ -322,10 +322,14 @@ generate_file_name (char *addr, const struct head *a)
   snprintf (addr, BUFFER * 2, "./%s.asl", a->name_agent);
 }
 
-void write_goals(FILE *fptr, const struct node *goals) {
-  for (const struct node *tmp_goal = goals; tmp_goal != NULL; tmp_goal = tmp_goal->next) {
-    fprintf(fptr, "!%s.\n", tmp_goal->name);
-  }
+void
+write_goals (FILE *fptr, const struct node *goals)
+{
+  for (const struct node * tmp_goal = goals; tmp_goal != NULL;
+       tmp_goal = tmp_goal->next)
+    {
+      fprintf (fptr, "!%s.\n", tmp_goal->name);
+    }
 }
 
 void
@@ -336,48 +340,58 @@ write_beliefs (FILE *fptr, const struct node *crencas)
     fprintf (fptr, "%s.\n", tmp_crenca->name);
 }
 
-void write_plans(FILE *fptr, const struct node *planos) {
-    for (const struct node *tmp_plano = planos; tmp_plano != NULL; tmp_plano = tmp_plano->next) {
-        fprintf(fptr, "\n+%s : ", tmp_plano->event_trigger);
+void
+write_plans (FILE *fptr, const struct node *planos)
+{
+  int plan_number = 1;
+  for (const struct node * tmp_plano = planos; tmp_plano != NULL;
+       tmp_plano = tmp_plano->next)
+    {
+      fprintf (fptr, "\n@plano%d\n", plan_number);
+      plan_number++;
 
-        char *complemento = tmp_plano->ctx_expr->complemento;
-        char *contexto1 = tmp_plano->ctx_expr->contexto1;
-        char *contexto2 = tmp_plano->ctx_expr->contexto2;
+      fprintf (fptr, "+!%s : ", tmp_plano->event_trigger);
 
-        switch (complemento[0]) {
-            case 'E':
-                fprintf(fptr, "%s & %s\n", contexto1, contexto2);
-                break;
-            case 'O':
-                fprintf(fptr, "%s | %s\n", contexto1, contexto2);
-                break;
-            case 'N':
-                fprintf(fptr, "not %s\n", contexto2);
-                break;
-            default:
-                fprintf(fptr, "%s\n", contexto2);
-                break;
-        }
+      char *complemento = tmp_plano->ctx_expr->complemento;
+      char *contexto1 = tmp_plano->ctx_expr->contexto1;
+      char *contexto2 = tmp_plano->ctx_expr->contexto2;
 
-        struct list *struc = tmp_plano->list;
+      switch (complemento[0])
+	{
+	case 'E':
+	  fprintf (fptr, "%s & %s\n", contexto1, contexto2);
+	  break;
+	case 'O':
+	  fprintf (fptr, "%s | %s\n", contexto1, contexto2);
+	  break;
+	case 'N':
+	  fprintf (fptr, "not %s\n", contexto2);
+	  break;
+	default:
+	  fprintf (fptr, "%s\n", contexto2);
+	  break;
+	}
 
-        if (struc != NULL) {
-            fprintf(fptr, "  <- ");
-            fprintf(fptr, "!%s", struc->name);
+      struct list *struc = tmp_plano->list;
 
-            struc = struc->next;
+      if (struc != NULL)
+	{
+	  fprintf (fptr, "  <- ");
+	  fprintf (fptr, "%s", struc->name);
 
-            while (struc != NULL) {
-                fprintf(fptr, " ;\n     !%s", struc->name);
-                struc = struc->next;
-            }
-            fprintf(fptr, ".\n"); // Replace the last semicolon with a period
-        } else {
-            fprintf(fptr, ".\n");
-        }
+	  struc = struc->next;
+
+	  while (struc != NULL)
+	    {
+	      fprintf (fptr, " ;\n     %s", struc->name);
+	      struc = struc->next;
+	    }
+	  fprintf (fptr, ".\n");
+	}
+      else
+	fprintf (fptr, ".\n");
     }
 }
-
 
 void
 generate_jason_file (struct head *a)
@@ -393,8 +407,8 @@ generate_jason_file (struct head *a)
     }
 
   write_beliefs (fptr, a->crencas);
-  fprintf(fptr, "\n");
-  write_goals(fptr, a->objetivos);
+  fprintf (fptr, "\n");
+  write_goals (fptr, a->objetivos);
   write_plans (fptr, a->planos);
 
   fclose (fptr);

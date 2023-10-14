@@ -1,0 +1,3 @@
+
+!naoPegarChuva.
+!comprarGuardaChuva.
